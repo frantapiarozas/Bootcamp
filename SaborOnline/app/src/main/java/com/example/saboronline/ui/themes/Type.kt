@@ -1,4 +1,4 @@
-package com.example.saboronline.ui.theme
+package com.example.saboronline.ui.themes
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

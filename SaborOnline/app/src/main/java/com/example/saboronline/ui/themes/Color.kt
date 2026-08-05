@@ -1,4 +1,4 @@
-package com.example.saboronline.ui.theme
+package com.example.saboronline.ui.themes
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,6 +1,5 @@
-package com.example.saboronline.ui.theme
+package com.example.saboronline.ui.themes
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
