@@ -9,7 +9,10 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import com.example.misgastospersonales.data.Gasto
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -55,4 +58,18 @@ fun MisGastosPersonalesTheme(
         typography = Typography,
         content = content
     )
+}
+
+class GastosViewModel : ViewModel() {
+    var gastos = mutableStateListOf<Gasto>()
+    private set
+
+    fun agregarGasto(detalle: String, monto: Double) {
+        gastos.add(
+            Gasto(
+                detalle = detalle,
+                monto = monto
+            )
+        )
+    }
 }
