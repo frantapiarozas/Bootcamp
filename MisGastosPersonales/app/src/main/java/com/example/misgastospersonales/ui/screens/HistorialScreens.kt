@@ -12,10 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.misgastospersonales.viewmodel.GastosViewModel
 
-class HistorialScreens {
-}
-
-
 @Composable
 fun HistorialScreen(viewModel: GastosViewModel) {
     LazyColumn(
@@ -24,7 +20,7 @@ fun HistorialScreen(viewModel: GastosViewModel) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(viewModel.listaGastos) { gasto ->
+        items(viewModel.listaGastos.value) { gasto ->
             Card(modifier = Modifier.fillMaxWidth()) {
                 Row(
                     modifier = Modifier
@@ -32,7 +28,7 @@ fun HistorialScreen(viewModel: GastosViewModel) {
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(gasto.detalle)
+                    Text(gasto.descripcion)
                     Text("$${gasto.monto}")
                 }
             }

@@ -17,16 +17,15 @@ data class Product(
 )
 
 data class HomeUiState(
-    val mainTitle: String = "Sabores artesanales\ncon historia",
-    val mainDescription: String = "Productos de productores de la zona central de Chile, con despacho seguro a todo el país.",
-    // Las 5 categorías solicitadas: Queso, Mermelada, Aceite oliva, Vino y Conservas
     val categories: List<Product> = listOf(
         Product("1", "Quesos", R.drawable.img_queso),
         Product("2", "Mermeladas", R.drawable.img_mermelada),
         Product("3", "Aceite oliva", R.drawable.img_aceite),
         Product("4", "Vinos", R.drawable.img_vino),
-        Product("5", "Conservas", R.drawable.img_conservas)
-    ),
+        Product("5", "Conservas", R.drawable.img_conservas)),
+    val mainTitle: String = "Productos artesanales\ncon historia",
+    val mainDescription: String = "Apoyamos a productores locales y llevamos lo mejor a tu mesa.",
+    // Las 5 categorías solicitadas: Queso, Mermelada, Aceite oliva, Vino y Conservas
     val gourmetBoxTitle: String = "CAJA GOURMET MENSUAL",
     val gourmetBoxDescription: String = "Una selección curada de productos artesanales, todos los meses en tu casa.",
     val gourmetBoxImageRes: Int = R.drawable.img_caja

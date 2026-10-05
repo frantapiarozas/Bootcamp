@@ -4,37 +4,23 @@
 package com.example.lasobremesa.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.lasobremesa.R
+import com.example.lasobremesa.data.ProducerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.example.lasobremesa.data.Product
+import com.example.lasobremesa.data.ProductRepository
 import kotlinx.coroutines.flow.update
 
 class ProductsViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(CatalogUiState())
     val uiState: StateFlow<CatalogUiState> = _uiState.asStateFlow()
+    private val productRepository = ProductRepository()
+    private val producerRepository = ProducerRepository()
 
     init {
-        val listaProductosIniciales = listOf(
-            Product(
-                id = "1",
-                name = "Queso Maduro",
-                category = "Quesos",
-                producer = "Don Pedro",
-                imageRes = R.drawable.img_queso_maduro, // El mismo recurso que usas en el carrito
-                price = 12990
-            ),
-            Product(
-                id = "2",
-                name = "Mermelada de Frambuesa",
-                category = "Mermeladas",
-                producer = "Gustoso Gourmet",
-                imageRes = R.drawable.img_merm_frambuesa,
-                price = 13980
-            )
-        )
+        val listaProductosIniciales = productRepository.getProducts()
 
         _uiState.update {
             it.copy(
@@ -47,13 +33,27 @@ class ProductsViewModel : ViewModel() {
 
     fun onCategoryToggled(category: String) {
         val currentCategories = _uiState.value.selectedCategories.toMutableSet()
-        if (currentCategories.contains(category)) {
-            currentCategories.remove(category)
+        if (category == "Todos") {
+            if (currentCategories.contains("Todos")) {
+                currentCategories.remove("Todos")
+            } else {
+                // Si marcan "Todos", limpiamos las demás y dejamos solo "Todos"
+                currentCategories.clear()
+                currentCategories.add("Todos")
+            }
         } else {
-            currentCategories.add(category)
+            // Si marcan otra categoría, quitamos "Todos" para que no convivan
+            currentCategories.remove("Todos")
+
+            if (currentCategories.contains(category)) {
+                currentCategories.remove(category)
+            } else {
+                currentCategories.add(category)
+            }
         }
         updateFilteredProducts(newCategories = currentCategories)
     }
+
 
     fun onProducerToggled(producer: String) {
         val currentProducers = _uiState.value.selectedProducers.toMutableSet()
@@ -65,14 +65,14 @@ class ProductsViewModel : ViewModel() {
         updateFilteredProducts(newProducers = currentProducers)
     }
 
-    private fun updateFilteredProducts(
-        newCategories: Set<String> = _uiState.value.selectedCategories,
+    private fun updateFilteredProducts(newCategories: Set<String> =
+     _uiState.value.selectedCategories,
         newProducers: Set<String> = _uiState.value.selectedProducers
     ) {
         val all = _uiState.value.allProducts
         val filtered = all.filter { product ->
-            val matchesCategory = newCategories.isEmpty() || newCategories.contains(product.category)
-            val matchesProducer = newProducers.isEmpty() || newProducers.contains(product.producer)
+            val matchesCategory = newCategories.isEmpty() || newCategories.contains("Todos") || newCategories.contains(product.category)
+            val matchesProducer = newProducers.isEmpty() || newProducers.contains(product.producerId)
             matchesCategory && matchesProducer
         }
 

@@ -4,10 +4,9 @@
 package com.example.lasobremesa.ui.components
 
 import androidx.compose.material.icons.Icons
-// import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -26,9 +25,10 @@ fun BottomNavigationBar(
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Products,
-        //BottomNavItem.History,
-        BottomNavItem.Cart,
-        BottomNavItem.Account
+        //BottomNavItem.Search,
+        //BottomNavItem.Favorites,
+        BottomNavItem.Account,
+        BottomNavItem.MoreMenu
     )
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
@@ -41,10 +41,15 @@ fun BottomNavigationBar(
                 selected = currentRoute == item.route,
                 onClick = {
                     onTabSelected(item)
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
+                    if (item.route == "more") {
+                        var expandedMenu = true
+                    }
+                     else {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 }
             )
@@ -59,7 +64,7 @@ sealed class BottomNavItem(
 ) {
     object Home : BottomNavItem("home", "Inicio", Icons.Default.Home)
     object Products : BottomNavItem("Products", "Productos", Icons.Default.Storefront)
-  //  object History : BottomNavItem("History", "Historia", Icons.Default.History)
-    object Cart : BottomNavItem("Cart", "Carrito", Icons.Default.ShoppingCart)
+    //object Search : BottomNavItem("search", "Busqueda", Icons.Default.Search)
     object Account : BottomNavItem("My Account", "Mi Cuenta", Icons.Default.Person)
+    object MoreMenu : BottomNavItem("more", "Más", Icons.Default.MoreHoriz)
 }

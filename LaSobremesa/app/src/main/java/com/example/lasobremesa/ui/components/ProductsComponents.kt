@@ -4,6 +4,7 @@
 package com.example.lasobremesa.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,16 +48,15 @@ fun FiltrosSection(
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
-            Text(
-                "Filtros", style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-            Text("CATEGORÍAS", style = MaterialTheme.typography.labelMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-
             // categorias: Quesos, Mermeladas......
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = selectedCategories.contains("Todos"),
+                    onCheckedChange = { onCategoryToggled("Todos") }
+                )
+                Text("Todos")
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = selectedCategories.contains("Quesos"),
@@ -94,47 +93,16 @@ fun FiltrosSection(
                 Text("Conservas")
             }
 
-
-            Spacer(modifier = Modifier.height(12.dp))
-            Text("PRODUCTOR", style = MaterialTheme.typography.labelMedium)
-            // Opciones de productores con checkbox
-            Spacer(modifier = Modifier.height(12.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = false, onCheckedChange = {})
-                Text("Don Pedro")
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = false, onCheckedChange = {})
-                Text("Gustoso Gourmet")
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-            Text("CONSERVACIÓN", style = MaterialTheme.typography.labelMedium)
-//            FilterCheckbox(label = "Refrigerado")
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = false, onCheckedChange = {})
-                Text("Refrigerado")
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = false, onCheckedChange = {})
-                Text("Congelado")
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = false, onCheckedChange = {})
-                Text("Ambiente")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
-                Text("Aplicar")
-            }
         }
     }
 }
 // muestra imagen y detalle de producto
 @Composable
-fun ProductCard(product: Product) {
-     Card(modifier = Modifier.fillMaxWidth()) {
+fun ProductCard(product: Product, onClick:(String) -> Unit) {
+     Card(modifier = Modifier.fillMaxWidth()
+         .clickable{
+             onClick(product.id)
+}) {
          Column(modifier = Modifier.padding(8.dp)) {
              // Imagen desde drawable
              Image(
@@ -150,7 +118,7 @@ fun ProductCard(product: Product) {
              Spacer(modifier = Modifier.height(8.dp))
              Text(text = product.name, style = MaterialTheme.typography.bodyMedium)
              Text(
-                 text = product.producer,
+                 text = product.name,
                  style = MaterialTheme.typography.bodySmall,
                  color = Color.Gray
              )

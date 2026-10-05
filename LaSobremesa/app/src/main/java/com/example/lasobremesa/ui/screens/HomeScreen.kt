@@ -3,15 +3,12 @@
 //
 package com.example.lasobremesa.ui.screens
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -33,6 +30,9 @@ import com.example.lasobremesa.ui.components.FooterInfoItem
 import com.example.lasobremesa.ui.viewmodel.HomeViewModel
 import com.example.lasobremesa.R
 import androidx.compose.foundation.Image
+import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.Storefront
+import androidx.compose.material.icons.filled.Verified
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,11 +49,28 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(bottom = innerPadding.calculateBottomPadding())
                 .verticalScroll(scrollState)
-                .padding(16.dp),
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Sección Categorías (5 productos)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                state.categories.forEach { category ->
+                    CategoryCard(
+                        product = category,
+                        onClick = { viewModel.onCategoryClick(category) }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(36.dp))
+
             // Cabecera Principal
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -75,61 +92,56 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Botones de acción principales
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
+               // boton ver productos
                 Button(
                     onClick = { onNavigateTo("products") },
-                    modifier = Modifier.weight(1f).height(46.dp),
+                    modifier = Modifier.fillMaxWidth().height(46.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E1E1E)),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("VER PRODUCTOS", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
-
-                OutlinedButton(
-                  //  onClick = { onNavigateTo("box") },
-                    onClick = {},
-                    modifier = Modifier.weight(1f).height(46.dp),
-                    border = BorderStroke(1.dp, Color.Black),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Black)
-                ) {
-                    Text("CONOCE LA CAJA", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Sección Categorías (5 productos)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "CATEGORÍAS", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = Color.Black)
-                TextButton(onClick = { onNavigateTo("categories") }){ }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
+                Spacer(modifier = Modifier.height(32.dp))
+            // imagen de productos
+            Image(
+                painter = painterResource(id = R.drawable.prods),
+                contentDescription = "Imagen de productos destacados",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                state.categories.forEach { category ->
-                    CategoryCard(
-                        product = category,
-                        onClick = { viewModel.onCategoryClick(category) }
-                    )
-                }
-            }
+                    .height(120.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(32.dp))
 
-            Spacer(modifier = Modifier.height(36.dp))
+            // iconos inferiores
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    FooterInfoItem(icon = Icons.Filled.Storefront, title = "Productores locales", subtitle = "")
+                    FooterInfoItem(icon = Icons.Filled.LocalShipping, title = "Envio cuidadoso", subtitle = "")
+                    FooterInfoItem(icon = Icons.Filled.Eco, title = "Ingredientes reales", subtitle = "")
+                    FooterInfoItem(icon = Icons.Filled.Verified, title = "Pago seguro", subtitle = "")
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+                //}
+
+            //Spacer(modifier = Modifier.height(32.dp))
+            Text(text = "Productos destacados",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+            )
+            Spacer(modifier = Modifier.height(22.dp))
+
+            Text(text = "Productores destacados",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+            )
+            Spacer(modifier = Modifier.height(22.dp))
 
             // Sección Caja Gourmet Mensual
             Card(
@@ -180,18 +192,6 @@ fun HomeScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-
-            // Footer inferior
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FooterInfoItem(icon = Icons.Default.LocalShipping, title = "Despacho seguro", subtitle = "a todo el país")
-                FooterInfoItem(icon = Icons.Default.Info, title = "Información clara", subtitle = "y transparente")
-                FooterInfoItem(icon = Icons.Default.AccountCircle, title = "Apoyo local", subtitle = "a pequeños productores")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
