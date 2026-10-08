@@ -1,13 +1,13 @@
 // FT
 // interfaz de usuario principal
 //
-
 package com.example.misgastospersonales.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,10 +16,6 @@ import com.example.misgastospersonales.ui.screens.FormularioScreen
 import com.example.misgastospersonales.ui.screens.HistorialScreen
 import com.example.misgastospersonales.viewmodel.GastosViewModel
 import com.example.misgastospersonales.viewmodel.SettingsViewModel
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,7 +31,7 @@ fun MainScreen(
     viewModel: GastosViewModel,
     settingsViewModel: SettingsViewModel,
     onOpenSettings: () -> Unit) {
-    var pantallaActual by remember { mutableStateOf(Pantalla.FORMULARIO) }
+    var pantallaActual = viewModel.pantallaActual
 
     Scaffold(
         topBar = {
@@ -57,15 +53,15 @@ fun MainScreen(
             NavigationBar {
                 NavigationBarItem(
                     selected = pantallaActual == Pantalla.FORMULARIO,
-                    onClick = { pantallaActual = Pantalla.FORMULARIO },
+                    onClick = { viewModel.cambiarPantalla(Pantalla.FORMULARIO) },
                     label = { Text("Agregar") },
                     icon = { Icon(Icons.Default.Add, contentDescription = "Agregar") }
                 )
                 NavigationBarItem(
                     selected = pantallaActual == Pantalla.HISTORIAL,
-                    onClick = { pantallaActual = Pantalla.HISTORIAL },
+                    onClick = { viewModel.cambiarPantalla(Pantalla.HISTORIAL) },
                     label = { Text("Histórico") },
-                    icon = {}
+                    icon = { Icon(Icons.Default.DateRange, contentDescription = "Histórico")  }
                 )
             }
         }

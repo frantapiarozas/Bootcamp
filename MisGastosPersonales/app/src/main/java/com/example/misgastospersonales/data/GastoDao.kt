@@ -1,3 +1,6 @@
+//FT
+//los gastos cuando se van a aplicar
+//
 package com.example.misgastospersonales.data
 
 import androidx.room.Dao

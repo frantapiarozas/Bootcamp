@@ -1,3 +1,6 @@
+//FT
+//repositorio de gastos
+//
 package com.example.misgastospersonales.data
 
 import kotlinx.coroutines.flow.Flow

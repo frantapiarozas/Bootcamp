@@ -1,3 +1,6 @@
+//FT
+//viewmodel de configuraciones
+//
 package com.example.misgastospersonales.viewmodel
 
 import androidx.lifecycle.ViewModel

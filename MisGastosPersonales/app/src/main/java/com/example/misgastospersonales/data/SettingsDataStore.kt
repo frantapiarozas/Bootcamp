@@ -1,3 +1,6 @@
+//FT
+// almacenamiento de configuraciones
+//
 package com.example.misgastospersonales.data
 
 import android.content.Context

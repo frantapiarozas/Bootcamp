@@ -1,3 +1,6 @@
+//FT
+// define esquemas color light y dark
+//
 package com.example.misgastospersonales.ui.theme
 
 import android.os.Build
@@ -25,7 +28,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun MisGastosPersonalesTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {

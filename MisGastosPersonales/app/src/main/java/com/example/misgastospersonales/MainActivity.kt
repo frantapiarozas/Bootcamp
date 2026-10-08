@@ -1,7 +1,6 @@
 // FT
 // punto de inicio de la app
 //
-
 package com.example.misgastospersonales
 
 import android.os.Bundle
@@ -11,7 +10,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.example.misgastospersonales.data.AppDatabase
 import com.example.misgastospersonales.data.GastoRepository
 import com.example.misgastospersonales.data.SettingsRepository
@@ -31,14 +30,13 @@ class MainActivity : ComponentActivity() {
     private val settingsViewModel: SettingsViewModel by viewModels {
         SettingsViewModelFactory(SettingsRepository(applicationContext),gastoRepository)}
 
-
     // conecta el viewModel con el mainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // le pasa el ViewModel a la pantalla
 
         setContent {
-            val mostrarConfiguracion = remember {mutableStateOf(false)}
+            val mostrarConfiguracion = rememberSaveable {mutableStateOf(false)}
             val isDarkTheme by settingsViewModel.isDarkTheme.collectAsState(initial = false)
             val isConfigured by settingsViewModel.isConfigured.collectAsState(initial = false)
 

@@ -1,6 +1,8 @@
+//FT
+//repositorio que gestiona preferencias y configuraciones
+//
 package com.example.misgastospersonales.data
 
-import android.R
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import com.example.misgastospersonales.data.SettingsDataStore.Companion.IS_CONFIGURED_KEY

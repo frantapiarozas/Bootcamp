@@ -1,8 +1,8 @@
 // FT
 // historial gastos guardados
 //
-
 package com.example.misgastospersonales.ui.screens
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,9 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.example.misgastospersonales.viewmodel.GastosViewModel
 
 @Composable
-fun HistorialScreen(viewModel: GastosViewModel) {
+fun HistorialScreen(viewModel: GastosViewModel,
+                    modifier:Modifier = Modifier
+) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -26,10 +28,14 @@ fun HistorialScreen(viewModel: GastosViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(gasto.descripcion)
-                    Text("$${gasto.monto}")
+                ){
+                    Text(
+                        text = gasto.descripcion,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = "$${gasto.monto.toInt()}"
+                    )
                 }
             }
         }

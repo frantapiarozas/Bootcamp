@@ -11,5 +11,5 @@ data class Gasto(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     val descripcion: String,
-    val monto: Double
+    val monto: Int
 )
