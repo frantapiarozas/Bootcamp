@@ -1,19 +1,25 @@
-
+//
+//  entrada principal del usuario en mpk
+//
 package com.example.misgastospersonales
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import com.example.misgastospersonales.data.GastoRepository
+import com.example.misgastospersonales.data.SettingsRepository
 import com.example.misgastospersonales.ui.MainScreen
 import com.example.misgastospersonales.ui.screens.SettingsScreen
 import com.example.misgastospersonales.ui.theme.MisGastosPersonalesTheme
-import com.example.misgastospersonales.viewmodel.GastosViewModel
+import com.example.misgastospersonales.viewmodel.GastosViewmodel
 import com.example.misgastospersonales.viewmodel.SettingsViewModel
+import com.example.misgastospersonales.data.AppDatabase
 
 @Composable
-fun App() {
-    // Instancias de los ViewModels
-    val gastosViewModel = remember { GastosViewModel() }
-    val settingsViewModel = remember { SettingsViewModel() }
+fun App(database: AppDataBase) {
+    val gastoRepository = remember { GastoRepository(database.gastoDao()) }
+    val settingsRepository = remember { SettingsRepository() }
+    val gastosViewModel = remember { GastosViewmodel(gastoRepository) }
+    val settingsViewModel = remember { SettingsViewModel(settingsRepository)}
 
     // Observar los estados de configuración y tema
     val isDarkTheme by settingsViewModel.isDarkTheme.collectAsState(initial = false)

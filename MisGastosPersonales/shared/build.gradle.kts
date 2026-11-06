@@ -1,37 +1,35 @@
+//import jdk.tools.jlink.internal.Platform.runtime
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    id("com.android.kotlin.multiplatform.library")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidLibrary)
+   // id("com.android.kotlin.multiplatform.library")
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.androidx.room)
 }
+room {schemaDirectory("$projectDir/schemas")}
 
 kotlin {
-    jvm ()
-
+    jvm()
     androidTarget {
        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+           jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            //jvmTarget.set(JvmTarget.JVM_17)
        }
     }
-
     sourceSets {
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.uiToolingPreview)
-            implementation("androidx.room:room-runtime:2.6.1")
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation("androidx.datastore:datastore-preferences-core:1.1.1")
-            implementation("androidx.datastore:datastore:1.1.1")
-            implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
-        }
-
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+                  }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
@@ -44,3 +42,20 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "com.example.misgastospersonales.shared"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+dependencies {
+    add("kspCommonMainMetadata", libs.androidx.room.compiler)
+}
+

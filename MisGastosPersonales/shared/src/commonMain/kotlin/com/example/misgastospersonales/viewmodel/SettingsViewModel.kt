@@ -1,5 +1,5 @@
 //FT
-//viewmodel de configuraciones
+//viewmodel de configuraciones en mpk
 //
 package com.example.misgastospersonales.viewmodel
 

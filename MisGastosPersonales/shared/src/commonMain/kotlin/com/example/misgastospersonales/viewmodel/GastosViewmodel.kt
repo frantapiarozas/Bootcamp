@@ -1,14 +1,12 @@
 //FT
-//viewmodel sobre los gastos
+//viewmodel sobre los gastos en mpk
 //
 package com.example.misgastospersonales.viewmodel
 
-import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
 import com.example.misgastospersonales.data.AppDatabase
 import com.example.misgastospersonales.data.Gasto
 import com.example.misgastospersonales.data.GastoRepository
@@ -17,11 +15,14 @@ import com.example.misgastospersonales.ui.Pantalla
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
 
 // Cambiamos de ViewModel a AndroidViewModel para poder acceder al contexto (Application)
-class GastosViewModel(application: Application) : AndroidViewModel(application) {
+//class GastosViewModel(application: Application) : AndroidViewModel(application) {
+class GastosViewmodel(
     private val repository: GastoRepository
     private val settingsRepository: SettingsRepository
+    ) : ViewModel() {
 
     // Lista observable para la UI que se actualizará automáticamente desde Room
     var listaGastos = mutableStateOf<List<Gasto>>(emptyList())
@@ -49,11 +50,6 @@ class GastosViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     init {
-        // Inicializamos la base de datos y el repositorio
-        val gastoDao = AppDatabase.obtenerBaseDatos(application).gastoDao()
-        repository = GastoRepository(gastoDao)
-        settingsRepository = SettingsRepository(application)
-
         // Escuchamos los cambios de la base de datos en tiempo real
         viewModelScope.launch {
             repository.todosLosGastos.collectLatest { gastos ->
